@@ -39,86 +39,108 @@ It provides separate dashboards for **HOD**, **Staff**, and **Students** with fe
 Follow these steps to set up the project locally.
 
 ### 1️⃣ Clone the Repository
-git clone <your-repo-url> 
-2️⃣ Create Virtual Environment
-python -m venv venv
+```bash
+git clone <your-repo-url>
 
+```
+2️⃣ Create Virtual Environment
+```bash
+python -m venv venv
+```
 3️⃣ Activate Virtual Environment
+```bash
 venv\Scripts\activate   # On Windows
 # source venv/bin/activate   # On macOS/Linux
-
+```
 4️⃣ Install Requirements
+```bash
 pip install -r requirements.txt
-
+```
 5️⃣ Apply Migrations
+```bash
 python manage.py makemigrations
 python manage.py migrate
-
+```
 6️⃣ Create Superuser
+```bash
 python manage.py createsuperuser
-
+```
 7️⃣ Run Development Server
+```bash
 python manage.py runserver
-
-
+```
 Project will be available at:
+```bash
 👉 http://127.0.0.1:8000/
-
+```
 📂 Project Structure
+```bash
 College_Management_System/
-├── manage.py
-├── student_management_project/
-│   ├── __init__.py
-│   ├── settings.py
-│   ├── urls.py
-│   └── wsgi.py
-├── student_management_app/
-│   ├── migrations/
-│   ├── templates/
-│   │   ├── base.html
-│   │   ├── home.html
-│   │   ├── login_page.html
-│   │   ├── registration.html
-│   │   ├── student_template/
-│   │   ├── staff_template/
-│   │   └── hod_template/
-│   ├── static/
-│   ├── admin.py
-│   ├── apps.py
-│   ├── models.py
-│   ├── views.py
-│   └── urls.py
-├── db.sqlite3
-└── requirements.txt
+student_management_project/
+   ├─ student_management_app/
+   ├─ templates/
+   │  ├─ base.html
+   │  ├─ home.html
+   │  ├─ login_page.html
+   │  ├─ registration.html
+   │  ├─ student_template/
+   │  ├─ staff_template/
+   │  └─ hod_template/
+   ├─ static/
+   └─ media/
+```
+9️⃣ URL routing 
+```bash
+In project student_management_project/urls.py:
 
-📸 Screenshots
+from django.contrib import admin
+from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
 
-Add screenshots of dashboards for HOD, Staff, and Students here.
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('', include('student_management_app.urls')),
+   ] + (static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+        + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT))
+```
+Create app urls at student_management_app/urls.py:
+```bash
+from django.urls import path
+from . import views, HodViews, StaffViews, StudentViews
 
-Example:
+urlpatterns = [
+    path('', views.home, name='home'),
+    path('login', views.loginUser, name='login'),
+    path('logout_user', views.logout_user, name='logout_user'),
+    path('registration', views.registration, name='registration'),
+    path('doLogin', views.doLogin, name='doLogin'),
+    path('doRegistration', views.doRegistration, name='doRegistration'),
+    # add more from HodViews/StaffViews/StudentViews as you build
+]
+```
+🔟 Migrate & run
+```bash
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser   # optional
+python manage.py runserver
+```
 
-![HOD Dashboard](screenshots/hod_dashboard.png)
-![Staff Dashboard](screenshots/staff_dashboard.png)
-![Student Dashboard](screenshots/student_dashboard.png)
+11) Open in browser
+```bash
+Go to http://127.0.0.1:8000/
+```
 
-🤝 Contribution
+## Common Errors & Fixes
+```bash
+- *TemplateNotFound*  
+  Ensure TEMPLATES[0]['DIRS'] = [BASE_DIR / 'templates'] and the file path exists.
 
-Fork the repository
+- *ImportError: cannot import name 'views'*  
+  Make sure your from . import views refers to the app’s views.py file (inside student_management_app), not the project folder.
 
-Create a new branch (feature-branch)
-
-Commit your changes
-
-Push to your branch
-
-Open a Pull Request
-
-📜 License
-
-This project is licensed under the MIT License.
-You’re free to use, modify, and distribute this project.
-
-
-✅ This is a **complete Markdown README** — with headings, formatting, code blocks, and placeholders for screenshots.  
-
-Do you also want me to add a **database schema diagram (ERD)** section in the README so others can understand models easily?
+- *Static files not loading*  
+  Confirm STATIC_URL, STATIC_ROOT, and that you’ve added the static() helpers in urls.py during development.
+```
+---
