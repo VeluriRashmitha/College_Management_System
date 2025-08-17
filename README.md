@@ -92,22 +92,22 @@ A web-based *College Management System* built with *Django* and *SQLite. It prov
    
 
 8) *Project-level folders*
-   text
    student_management_project/
-   ├─ student_management_app/
-   ├─ templates/
-   │  ├─ base.html
-   │  ├─ home.html
-   │  ├─ login_page.html
-   │  ├─ registration.html
-   │  ├─ student_template/
-   │  ├─ staff_template/
-   │  └─ hod_template/
-   ├─ static/
-   └─ media/
+├─ student_management_app/
+├─ templates/
+│  ├─ base.html
+│  ├─ home.html
+│  ├─ login_page.html
+│  ├─ registration.html
+│  ├─ student_template/
+│  ├─ staff_template/
+│  └─ hod_template/
+├─ static/
+└─ media/
+
    
 
-9) *URL routing*  
+10) *URL routing*  
    In project student_management_project/urls.py:
    python
    from django.contrib import admin
