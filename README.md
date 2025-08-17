@@ -39,8 +39,7 @@ It provides separate dashboards for **HOD**, **Staff**, and **Students** with fe
 Follow these steps to set up the project locally.
 
 ### 1️⃣ Clone the Repository
-```bash
-git clone <your-repo-url> .
+git clone <your-repo-url> 
 2️⃣ Create Virtual Environment
 python -m venv venv
 
